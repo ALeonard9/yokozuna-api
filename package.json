@@ -1,7 +1,7 @@
 {
   "name": "yokozuna-api",
   "version": "0.0.1",
-  "description": "API for a brower/ mobile simulation game focused on sumo wrestling",
+  "description": "API for a browser/ mobile simulation game focused on sumo wrestling",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -23,5 +23,9 @@
     "gulp-uglify": "^2.0.1",
     "jshint": "^2.9.4",
     "jshint-stylish": "^2.2.1"
+  },
+  "dependencies": {
+    "express": "^4.14.1",
+    "mysql": "^2.12.0"
   }
 }
