@@ -9,7 +9,6 @@ gulp.task('default', function() {
    .pipe(jshint())
    .pipe(jshint.reporter('jshint-stylish'))
    .pipe(jshint.reporter('fail'))
-   .pipe(concat('yokozuna.js'))
    .pipe(uglify())
    .pipe(gulp.dest('dist'));
 });

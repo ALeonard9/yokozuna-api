@@ -4,7 +4,7 @@
   "description": "API for a browser/ mobile simulation game focused on sumo wrestling",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -17,12 +17,14 @@
   },
   "homepage": "https://github.com/ALeonard9/yokozuna-api#readme",
   "devDependencies": {
+    "chai": "^3.5.0",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.1",
     "gulp-jshint": "^2.0.4",
     "gulp-uglify": "^2.0.1",
     "jshint": "^2.9.4",
-    "jshint-stylish": "^2.2.1"
+    "jshint-stylish": "^2.2.1",
+    "mocha": "^3.2.0"
   },
   "dependencies": {
     "express": "^4.14.1",

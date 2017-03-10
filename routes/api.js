@@ -1,19 +1,19 @@
 // Dependencies
-var yoko = require('../dist/yokozuna')
+var meta = require('../dist/meta');
 var express = require('express');
 var router = express.Router();
 
 // Routes
 router.get('/version', function(req, res){
   response = {};
-  response = yoko.versionJSON();
+  response = meta.versionJSON();
   res.send(response);
   console.log('/api/version: ' + response);
 })
 
 router.get('/package', function(req, res){
   response = {};
-  response = yoko.packageJSON();
+  response = meta.packageJSON();
   res.send(response);
   console.log('/api/package: ' + response);
 })
