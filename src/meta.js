@@ -9,7 +9,6 @@ module.exports ={
     // Function
     var response = {};
     response.version = version;
-    console.log(response);
     return response;
   },
   packageJSON: function() {

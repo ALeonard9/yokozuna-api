@@ -2,7 +2,7 @@
 var express = require('express');
 
 // Variables
-var port = 3000;
+var port = process.env.port || 3000;
 
 // Express
 var app = express();
