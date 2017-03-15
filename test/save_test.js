@@ -4,21 +4,27 @@ var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 chai.should();
 var save = require('../dist/save');
+var user = require('../dist/user');
+var rikishi = require('../dist/rikishi');
 
-describe('Allows CRUD operations on save table', function() {
-  it('should create save', function() {
-    var test = save.create(1);
-    return expect(Promise.resolve(test)).to.eventually.have.property('insertId').should.eventually.be.an('number');
+user.create('save@test', '55555')
+  .then((data) => {
+    var test = save.create(data['insertId'])
+      .then((data2) => {
+        rikishi.createUserRikishi(data2['insertId'], 2, 2, 'us')
+          .then((data3) => {
+            describe('Allows CRUD operations on save table', function() {
+              it('should create save', function() {
+                data2['insertId'].should.be.an('number');
+              });
+              it('should update the rikishi', function() {
+                var test2 = save.update(data2['insertId'], {rikishi_id: data3['insertId']});
+                return expect(Promise.resolve(test2)).to.eventually.have.property('insertId').should.eventually.be.an('number');
+              });
+              it('should create rikishi', function() {
+                data3['insertId'].should.be.an('number');
+              });
+            });
+          });
+        });
   });
-  it('should update the rikishi', function() {
-    var test = save.update(2, {rikishi_id: 2});
-    return expect(Promise.resolve(test)).to.eventually.have.property('insertId').should.eventually.be.an('number');
-  });
-  // it('should update user', function() {
-  //
-  // });
-  // it('should delete user', function() {
-  //
-  // });
-
-});

@@ -4,6 +4,7 @@ var save = require('../dist/save');
 var user = require('../dist/user');
 var rikishi = require('../dist/rikishi');
 var apikey = require('../dist/apikey');
+var game = require('../dist/game');
 var express = require('express');
 var bodyParser = require('body-parser');
 var router = express.Router();
@@ -75,7 +76,10 @@ router.post('/game', function(req, res){
                   .then((data4) => {
                     rikishi.initializeRankings(req.body.save_id)
                       .then((data5) => {
-                        res.send(data2);
+                        game.newRound(req.body.save_id)
+                          .then((data6) => {
+                            res.send(data2);
+                          });
                       });
                   });
             });
@@ -85,7 +89,7 @@ router.post('/game', function(req, res){
 
 
 router.post('/test', function(req, res){
-  response = apikey.validate(1, 123445)
+  response = game.newRound(req.body.save_id)
     .then((data) => {
       res.send(data);
       console.log('/api/test: ' + JSON.stringify(data));
