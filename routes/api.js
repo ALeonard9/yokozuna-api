@@ -5,12 +5,12 @@ var user = require('../dist/user');
 var rikishi = require('../dist/rikishi');
 var apikey = require('../dist/apikey');
 var game = require('../dist/game');
+const async = require('async');
 var express = require('express');
 var bodyParser = require('body-parser');
 var router = express.Router();
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({extended: true }));
-
 
 // Routes
 router.get('/version', function(req, res){
@@ -47,6 +47,36 @@ router.post('/save', function(req, res){
     });
 })
 
+router.get('/save/:id', function(req, res){
+  response = save.read(req.params.id)
+    .then((data) => {
+      console.log('/api/user get: ' + JSON.stringify(data));
+      res.send(data);
+    });
+})
+
+router.delete('/save', function(req, res){
+  var userid = req.body.userid;
+  var key = req.body.apikey;
+  var saveid = req.body.save_id
+  response = apikey.validate(userid, key, saveid)
+    .then((data) => {
+      if (data.result == 'fail') {
+        console.log('Validation failed. userid: ' + userid + ' apikey: ' + apikey);
+        res.send('Validation failed.');
+        return;
+      }
+    })
+    .then((data) => {
+      response = save.delete(saveid)
+        .then((data) => {
+          console.log('/api/user delete: ' + JSON.stringify(data));
+          res.send(data);
+        });
+    });
+})
+
+
 router.post('/user', function(req, res){
   var email = req.body.email;
   var password = req.body.password;
@@ -56,6 +86,76 @@ router.post('/user', function(req, res){
       res.send(data);
     });
 })
+router.get('/user/:id', function(req, res){
+  response = user.readSaves(req.params.id)
+    .then((data) => {
+      console.log('/api/user get: ' + JSON.stringify(data));
+      res.send(data);
+    });
+})
+// router.delete('/user/:id', function(req, res){
+//   var prom = Promise.defer();
+//   response = apikey.validate(req.body.userid, req.body.apikey)
+//     .then((data) => {
+//       if (data.result == 'fail') {
+//         console.log('Validation failed. userid: ' + userid + ' apikey: ' + apikey);
+//         res.send('Validation failed.');
+//         return;
+//       }
+//     })
+//     .then((data) => {
+//       response = user.readSaves(req.body.userid)
+//         .then((data2) => {
+//           console.log(data2);
+//           for (var i in data2) {
+//             id = data2[i]['id'];
+//             console.log("Length" + data2.length);
+//             console.log("Iterator " + i);
+//             save.delete(id)
+//               .then((data) => {
+//
+//                 if (i == data2.length -1) {
+//
+//                 }
+//               })
+//             console.log("Deleted Save id: " + id);
+//           }
+//           prom.resolve("Finished");
+//         });
+//     })
+//     res.send(prom.promise);
+// })
+router.delete('/user/:id', function(req, res){
+  response = apikey.validate(req.body.userid, req.body.apikey)
+    .then((data) => {
+      if (data.result == 'fail') {
+        console.log('Validation failed. userid: ' + userid + ' apikey: ' + apikey);
+        res.send('Validation failed.');
+        return;
+      }
+    })
+    .then((data) => {
+      response = user.readSaves(req.body.userid)
+        .then((data2) => {
+          async.forEachOf(data2, function (value, key, callback) {
+                try {
+                  save.delete(data2[key]['id'])
+                    .then((data3) => {
+                      console.log("Deleted Save id: " + data2[key]['id']);
+                      if (key == data2.length -1) {
+                        user.delete(req.body.userid)
+                      }
+                    })
+                } catch (e) {
+                    return callback(e);
+                }
+                callback()
+            });
+        })
+        });
+    res.send("User " + req.body.userid +" removed");
+})
+
 
 router.post('/game', function(req, res){
   response = apikey.validate(req.body.userid, req.body.key)

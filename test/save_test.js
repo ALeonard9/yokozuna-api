@@ -25,6 +25,17 @@ user.create('save@test', '55555')
                 data3['insertId'].should.be.an('number');
               });
             });
+          save.delete(data2['insertId'])
+            .then((data4) => {
+              describe('Allows delete operations on save table', function() {
+                it('should delete save', function() {
+                  data2['insertId'].should.be.an('number');
+                });
+              });
+            })
+            .then((data4) => {
+              user.delete(data['insertId']);
+            })
           });
-        });
+      });
   });

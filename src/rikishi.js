@@ -23,7 +23,6 @@ module.exports ={
     };
     // Function
     var response = Promise.defer();
-    connection.connect();
     connection.query('INSERT INTO sumo.rikishi SET ?', inserts, function(err, result) {
       if (err) throw err;
       console.log(JSON.stringify(result));
@@ -54,7 +53,6 @@ module.exports ={
     };
     // Function
     var response = Promise.defer();
-    connection.connect();
     var query = connection.query('INSERT INTO sumo.rikishi SET ?', inserts, function(err, result) {
       if (err) throw err;
       response.resolve(result);
@@ -73,7 +71,6 @@ module.exports ={
     });
     // Variables
     var response = Promise.defer();
-    connection.connect();
     var query = connection.query('CALL initialRikishi(?)', save_id, function(err, result) {
       if (err) throw err;
       response.resolve(result);
@@ -92,7 +89,6 @@ module.exports ={
     });
     // Variables
     var response = Promise.defer();
-    connection.connect();
     var query = connection.query('CALL initialRankings(?)', save_id, function(err, result) {
       if (err) throw err;
       response.resolve(result);

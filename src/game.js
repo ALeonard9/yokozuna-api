@@ -12,7 +12,6 @@ module.exports ={
     // Variables
     // Function
     var response = Promise.defer();
-    connection.connect();
     connection.query('CALL newRound(?)', save_id, function(err, result) {
       if (err) throw err;
       response.resolve(result);
@@ -31,7 +30,6 @@ module.exports ={
     // Variables
     // Function
     var response = Promise.defer();
-    connection.connect();
     connection.query('CALL simDay(?, ?, ?)', [save_id, tou, day], function(err, result) {
       if (err) throw err;
       response.resolve(result);

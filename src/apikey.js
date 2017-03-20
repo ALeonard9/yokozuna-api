@@ -28,7 +28,6 @@ module.exports ={
 
     // Function
     var response = Promise.defer();
-    connection.connect();
 
     var query = connection.query(sql, inserts, function(err, rows, fields) {
       if (err) throw err;

@@ -29,4 +29,5 @@ user.create('apikey@test', '55555')
         return expect(Promise.resolve(test)).to.eventually.have.property('result').should.eventually.equal('fail');
       });
     });
+    user.delete(data['insertId']);
   });
